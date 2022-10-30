@@ -14,7 +14,9 @@ app
   })
   .get((req, res) => {
     getPosts(req, res);
-  })
+  });
+app
+  .route("/:id")
   .put((req, res) => {
     updatePost(req, res);
   })
