@@ -5,6 +5,8 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import mongoose from "mongoose";
 import { postsRouter } from "./routes/posts/posts.routes";
+import { usersRouter } from "./routes/users/users.routes";
+import { authRouter } from "./routes/auth/auth.routes";
 
 mongoose
   .connect(mongoDbUrl)
@@ -32,7 +34,9 @@ app.use((req, res, next) => {
   );
   next();
 });
+app.use("/api/auth", authRouter);
 app.use("/api/posts", postsRouter);
+app.use("/api/users", usersRouter);
 
 app.listen(5000, () => {
   console.log("Server started on port 5000");
