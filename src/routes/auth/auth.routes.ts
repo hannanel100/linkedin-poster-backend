@@ -3,7 +3,7 @@ import axios from "axios";
 import dotenv from "dotenv";
 dotenv.config();
 const app = express();
-//route to return the accessToken from linkedin
+// route to return the accessToken from linkedin
 app.get("/accessToken/:code", async (req, res) => {
   console.log(req.params.code);
   try {

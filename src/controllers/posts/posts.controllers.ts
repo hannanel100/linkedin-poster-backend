@@ -1,4 +1,4 @@
-//controllers for crud operations
+// controllers for crud operations
 
 import { Request, Response } from 'express';
 import {createPostService, getPostsService, updatePostService, deletePostService} from '../../services/posts/posts.services';

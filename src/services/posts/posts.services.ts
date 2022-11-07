@@ -1,9 +1,10 @@
-//db access layer for posts
+// db access layer for posts
 
 import { Post, IPost } from "../../models/posts/post.models";
 import { Request, Response } from "express";
 const createPost = (req: Request, res: Response) => {
   const post = new Post({
+    id: req.body.id,
     image: req.body.image,
     content: req.body.content,
     date: req.body.date,
@@ -20,26 +21,29 @@ const createPost = (req: Request, res: Response) => {
     }
   });
 };
-const getPosts = (req: Request, res: Response) => {
-  Post.find().then((documents: IPost[]) => {
-    if (documents.length > 0) {
+const getPosts = async (req: Request, res: Response) => {
+  try {
+    const documents = await Post.find();
+    if (documents) {
       res.status(200).json({
         message: "Posts fetched successfully!",
         posts: documents,
       });
-    } else {
-      res.status(500).json({
-        message: "Posts not fetched",
-      });
     }
-  });
+  } catch (error) {
+    res.status(500).json({
+      message: "Posts not fetched",
+    });
+  }
 };
 const updatePost = (req: Request, res: Response) => {
   const post = new Post({
     _id: req.body.id,
+    id: req.body.id,
     image: req.body.image,
     content: req.body.content,
     date: req.body.date,
+    isPosted: req.body.isPosted,
   });
   Post.updateOne({ _id: req.params.id }, post)
     .then(() => {
@@ -49,14 +53,14 @@ const updatePost = (req: Request, res: Response) => {
       res.status(500).json({ message: "Update failed!" });
     });
 };
-const deletePost = (req: Request, res: Response) => {
-  Post.deleteOne({ _id: req.params.id })
-    .then(() => {
-      res.status(200).json({ message: "Post deleted!" });
-    })
-    .catch((e) => {
-      res.status(500).json({ message: "Post not deleted!" });
-    });
+const deletePost = async (req: Request, res: Response) => {
+  // delete using async await
+  const post = await Post.findByIdAndDelete(req.params.id);
+  if (post) {
+    res.status(200).json({ message: "Delete successful!" });
+  } else {
+    res.status(500).json({ message: "Delete failed!" });
+  }
 };
 
 export {
