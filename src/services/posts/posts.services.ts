@@ -8,6 +8,7 @@ const createPost = (req: Request, res: Response) => {
     image: req.body.image,
     content: req.body.content,
     date: req.body.date,
+    isPosted: req.body.isPosted,
   });
   post.save().then((returnedPost) => {
     if (returnedPost === post) {
@@ -22,8 +23,9 @@ const createPost = (req: Request, res: Response) => {
   });
 };
 const getPosts = async (req: Request, res: Response) => {
+  const userId = req.query.userId;
   try {
-    const documents = await Post.find();
+    const documents = await Post.find({ id: userId });
     if (documents) {
       res.status(200).json({
         message: "Posts fetched successfully!",
@@ -38,7 +40,7 @@ const getPosts = async (req: Request, res: Response) => {
 };
 const updatePost = (req: Request, res: Response) => {
   const post = new Post({
-    _id: req.body.id,
+    _id: req.params.id,
     id: req.body.id,
     image: req.body.image,
     content: req.body.content,
