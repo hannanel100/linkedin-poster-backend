@@ -2,66 +2,61 @@
 
 import { Post, IPost } from "../../models/posts/post.models";
 import { Request, Response } from "express";
-const createPost = (req: Request, res: Response) => {
-  const post = new Post({
-    id: req.body.id,
-    image: req.body.image,
-    content: req.body.content,
-    date: req.body.date,
-    isPosted: req.body.isPosted,
+const createPost = async (post: IPost) => {
+  const { id, image, content, date, isPosted } = post;
+  const newPost = new Post({
+    id,
+    image,
+    content,
+    date,
+    isPosted,
   });
-  post.save().then((returnedPost) => {
-    if (returnedPost === post) {
-      res.status(201).json({
-        message: "Post added successfully",
-      });
-    } else {
-      res.status(500).json({
-        message: "Post not added",
-      });
-    }
-  });
-};
-const getPosts = async (req: Request, res: Response) => {
-  const userId = req.query.userId;
-  try {
-    const documents = await Post.find({ id: userId });
-    if (documents) {
-      res.status(200).json({
-        message: "Posts fetched successfully!",
-        posts: documents,
-      });
-    }
-  } catch (error) {
-    res.status(500).json({
-      message: "Posts not fetched",
-    });
+  const returnedPost = await newPost.save();
+  if (returnedPost === newPost) {
+    return { message: "Post created successfully!", status: 201 };
+  } else {
+    return { message: "Post not created", status: 500 };
   }
 };
-const updatePost = (req: Request, res: Response) => {
-  const post = new Post({
-    _id: req.params.id,
-    id: req.body.id,
-    image: req.body.image,
-    content: req.body.content,
-    date: req.body.date,
-    isPosted: req.body.isPosted,
-  });
-  Post.updateOne({ _id: req.params.id }, post)
-    .then(() => {
-      res.status(200).json({ message: "Update successful!" });
-    })
-    .catch((e) => {
-      res.status(500).json({ message: "Update failed!" });
-    });
+const getPosts = async (userId: string) => {
+  try {
+    const documents = await Post.find({ id: userId });
+    if (documents.length > 0) {
+      return {
+        message: "Posts fetched successfully!",
+        status: 200,
+        posts: documents,
+      };
+    } else {
+      return { message: "No posts found", status: 404, posts: [] };
+    }
+  } catch (error) {
+    return { message: "Posts not fetched", status: 500 };
+  }
 };
-const deletePost = async (req: Request, res: Response) => {
+const updatePost = async (post: IPost, postId: string) => {
+  const postToUpdate = new Post({
+    ...post,
+    _id: postId,
+  });
+  try {
+    const updatedPost = await Post.updateOne({ _id: postId }, postToUpdate);
+    return { message: "Post updated successfully!", status: 200 };
+  } catch (error) {
+    return { message: "Post not updated", status: 500 };
+  }
+};
+const deletePost = async (postId: string) => {
   // delete using async await
-  const post = await Post.findByIdAndDelete(req.params.id);
-  if (post) {
-    res.status(200).json({ message: "Delete successful!" });
-  } else {
-    res.status(500).json({ message: "Delete failed!" });
+  try {
+    const post = await Post.findByIdAndDelete(postId);
+    if (post) {
+      return { message: "Post deleted successfully!", status: 200 };
+    } else {
+      return { message: "Post not found", status: 404 };
+    }
+  } catch (error) {
+    return { message: "Post not deleted", status: 500 };
   }
 };
 
