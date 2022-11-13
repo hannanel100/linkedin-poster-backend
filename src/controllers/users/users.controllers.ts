@@ -1,4 +1,8 @@
-import { createOrUpdateUser } from "../../services/users/users.services";
+import {
+  getUserProfile,
+  getUserById,
+  getAllUsers,
+} from "./../../bl/users/users.bl";
 import express from "express";
 import axios from "axios";
 import { User } from "../../models/users/user.model";
@@ -31,7 +35,7 @@ app.route("/linkedin/user/:accessToken").get(async (req, res) => {
 // post route to create a new user if it doesn't exist, or return the user if it does, and update the user's accessToken if it has changed
 app.route("/linkedin/user").post(async (req, res) => {
   try {
-    const user = await createOrUpdateUser(req.body);
+    const user = await getUserProfile(req.body);
     res.json(user).status(200);
   } catch (err) {
     console.error(
@@ -44,7 +48,7 @@ app.route("/linkedin/user").post(async (req, res) => {
 
 app.route("/linkedin/user/:id").get(async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await getUserById(req.params.id);
     res.json(user).status(200);
   } catch (err) {
     console.error(
@@ -57,7 +61,7 @@ app.route("/linkedin/user/:id").get(async (req, res) => {
 // route to get all users
 app.route("/linkedin/users").get(async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await getAllUsers();
     res.json(users).status(200);
   } catch (err) {
     console.error(

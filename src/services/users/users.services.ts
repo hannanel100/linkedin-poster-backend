@@ -18,3 +18,28 @@ export const createOrUpdateUser = async (user: IUser) => {
     return newUser;
   }
 };
+export const getUserByIdService = async (id: string) => {
+  try {
+    const user = await User.findById(id);
+    return user;
+  } catch (err) {
+    console.error(
+      "🚀 ~ file: users.controllers.ts ~ line 12 ~ getUserProfile ~ err",
+      err
+    );
+    return err;
+  }
+}
+
+export const getAllUsersService = async () => {
+  try {
+    const users = await User.find();
+    return users;
+  } catch (err) {
+    console.error(
+      "🚀 ~ file: users.controllers.ts ~ line 12 ~ getUserProfile ~ err",
+      err
+    );
+    return err;
+  }
+}
