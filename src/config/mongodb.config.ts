@@ -1,1 +1,1 @@
-export const mongoDbUrl = "mongodb://mongo:27017/posts";
+export const mongoDbUrl = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@pigeon-db.gu29rwx.mongodb.net/?retryWrites=true&w=majority`;
