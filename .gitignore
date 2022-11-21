@@ -7,3 +7,5 @@ dist
 .env.development
 .env.test
 .env.production
+docker-compose-aws.txt
+docker-compose-aws.yml
