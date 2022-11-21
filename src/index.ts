@@ -11,7 +11,9 @@ import { usersRouter } from "./controllers/users/users.controllers";
 import { authRouter } from "./controllers/auth/auth.controllers";
 
 mongoose
-  .connect(mongoDbUrl)
+  .connect(
+    `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}${mongoDbUrl}`
+  )
   .then(() => {
     console.log("Connected to database!");
   })
