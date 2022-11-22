@@ -13,10 +13,8 @@ export const getUserProfile = async (user: IUser) => {
     const receivedUser = await createOrUpdateUser(user);
     return receivedUser;
   } catch (err) {
-    console.error(
-      "🚀 ~ file: users.controllers.ts ~ line 12 ~ getUserProfile ~ err",
-      err
-    );
+    console.log("🚀 ~ file: users.bl.ts ~ line 16 ~ getUserProfile ~ err", err);
+
     return err;
   }
 };
@@ -25,10 +23,8 @@ export const getUserById = async (id: string) => {
     const user = await getUserByIdService(id);
     return user;
   } catch (err) {
-    console.error(
-      "🚀 ~ file: users.controllers.ts ~ line 12 ~ getUserProfile ~ err",
-      err
-    );
+    console.log("🚀 ~ file: users.bl.ts ~ line 26 ~ getUserById ~ err", err);
+
     return err;
   }
 };
@@ -37,12 +33,10 @@ export const getAllUsers = async () => {
     const users = await getAllUsersService();
     return users;
   } catch (err) {
-    console.error(
-      "🚀 ~ file: users.controllers.ts ~ line 12 ~ getUserProfile ~ err",
-      err
-    );
+    console.log("🚀 ~ file: users.bl.ts ~ line 36 ~ getAllUsers ~ err", err);
+
     return err;
   }
 };
 
-//
+

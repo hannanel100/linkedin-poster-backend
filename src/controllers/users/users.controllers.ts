@@ -18,17 +18,13 @@ app.route("/linkedin/user/:accessToken").get(async (req, res) => {
         },
       }
     );
-    console.log(
-      "🚀 ~ file: users.routes.ts ~ line 18 ~ app.route ~ response.data",
-      response.data
-    );
+
     res.status(200).json(response.data);
   } catch (err) {
-    console.error(
-      "🚀 ~ file: users.routes.ts ~ line 19 ~ app.route ~ err",
+    console.log(
+      "🚀 ~ file: users.controllers.ts ~ line 24 ~ app.route ~ err",
       err
     );
-
     res.send(err).status(500);
   }
 });
@@ -38,8 +34,8 @@ app.route("/linkedin/user").post(async (req, res) => {
     const user = await getUserProfile(req.body);
     res.json(user).status(200);
   } catch (err) {
-    console.error(
-      "🚀 ~ file: users.controllers.ts ~ line 12 ~ getUserProfile ~ err",
+    console.log(
+      "🚀 ~ file: users.controllers.ts ~ line 34 ~ app.route ~ err",
       err
     );
     res.send(err).status(500);
@@ -51,10 +47,11 @@ app.route("/linkedin/user/:id").get(async (req, res) => {
     const user = await getUserById(req.params.id);
     res.json(user).status(200);
   } catch (err) {
-    console.error(
-      "🚀 ~ file: users.controllers.ts ~ line 12 ~ getUserProfile ~ err",
+    console.log(
+      "🚀 ~ file: users.controllers.ts ~ line 44 ~ app.route ~ err",
       err
     );
+
     res.send(err).status(500);
   }
 });
@@ -64,8 +61,8 @@ app.route("/linkedin/users").get(async (req, res) => {
     const users = await getAllUsers();
     res.json(users).status(200);
   } catch (err) {
-    console.error(
-      "🚀 ~ file: users.controllers.ts ~ line 12 ~ getUserProfile ~ err",
+    console.log(
+      "🚀 ~ file: users.controllers.ts ~ line 64 ~ app.route ~ err",
       err
     );
     res.send(err).status(500);
