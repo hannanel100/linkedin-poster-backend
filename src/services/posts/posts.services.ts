@@ -10,19 +10,12 @@ const createPost = async (post: IPost) => {
   if (image) {
     publicId = await uploadImage(image);
   }
-  // change date to utc string format
-  const utcDate = new Date(date).toUTCString();
-  console.log(
-    "🚀 ~ file: posts.services.ts ~ line 15 ~ createPost ~ utcDate",
-    utcDate
-  );
-
   // save post to db
   const newPost = new Post({
     id,
     publicId,
     content,
-    utcDate,
+    date,
     isPosted,
   });
   const returnedPost = await newPost.save();
@@ -35,19 +28,20 @@ const createPost = async (post: IPost) => {
 const getPosts = async (userId: string) => {
   try {
     const documents = await Post.find({ id: userId });
-    // retrieve image urls from cloudinary
-    const posts = documents.map((post) => {
-      const { publicId, content, date, isPosted } = post;
-      const image = publicId
-        ? `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/${publicId}.jpg`
-        : undefined;
-      return { image, content, date, isPosted, _id: post._id, id: post.id };
-    });
-    return {
-      message: "Posts fetched successfully!",
-      status: 200,
-      posts: posts.length > 0 ? posts : [],
-    };
+      // retrieve image urls from cloudinary
+      const posts = documents.map((post) => {
+        const { publicId, content, date, isPosted } = post;
+        const image = publicId
+          ? `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/${publicId}.jpg`
+          : undefined;
+        return { image, content, date, isPosted, _id: post._id, id: post.id };
+      });
+      return {
+        message: "Posts fetched successfully!",
+        status: 200,
+        posts: posts.length> 0 ? posts : [],
+      };
+    
   } catch (error) {
     return { message: "Posts not fetched", status: 500 };
   }
