@@ -5,9 +5,11 @@ import { uploadImage } from "../../cloudinary";
 
 const createPost = async (post: IPost) => {
   const { id, image, content, date, isPosted } = post;
-
+  let publicId = undefined;
   // upload image to cloudinary
-  const publicId = await uploadImage(image);
+  if (image) {
+    publicId = await uploadImage(image);
+  }
   // save post to db
   const newPost = new Post({
     id,
@@ -26,21 +28,19 @@ const createPost = async (post: IPost) => {
 const getPosts = async (userId: string) => {
   try {
     const documents = await Post.find({ id: userId });
-    if (documents.length > 0) {
-      // retrieve image urls from cloudinary
-      const posts = documents.map((post) => {
-        const { publicId, content, date, isPosted } = post;
-        const image = `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/${publicId}.jpg`;
-        return { image, content, date, isPosted, _id: post._id, id: post.id };
-      });
-      return {
-        message: "Posts fetched successfully!",
-        status: 200,
-        posts: posts,
-      };
-    } else {
-      return { message: "No posts found", status: 404, posts: [] };
-    }
+    // retrieve image urls from cloudinary
+    const posts = documents.map((post) => {
+      const { publicId, content, date, isPosted } = post;
+      const image = publicId
+        ? `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/${publicId}.jpg`
+        : undefined;
+      return { image, content, date, isPosted, _id: post._id, id: post.id };
+    });
+    return {
+      message: "Posts fetched successfully!",
+      status: 200,
+      posts: posts.length > 0 ? posts : [],
+    };
   } catch (error) {
     return { message: "Posts not fetched", status: 500 };
   }
