@@ -10,12 +10,19 @@ const createPost = async (post: IPost) => {
   if (image) {
     publicId = await uploadImage(image);
   }
+  // change date to utc string format
+  const utcDate = new Date(date).toUTCString();
+  console.log(
+    "🚀 ~ file: posts.services.ts ~ line 15 ~ createPost ~ utcDate",
+    utcDate
+  );
+
   // save post to db
   const newPost = new Post({
     id,
     publicId,
     content,
-    date,
+    utcDate,
     isPosted,
   });
   const returnedPost = await newPost.save();
