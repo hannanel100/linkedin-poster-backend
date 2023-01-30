@@ -8,9 +8,10 @@ These instructions will get you a copy of the project up and running on your loc
 - Node.js installed on your machine.
 - A MongoDB database setup and running.
 - A Cloudinary account for storing media files.
+- An App in [Linkedin Developers](https://developer.linkedin.com/)
 
 ### Installing
-- Clone the repository `git clone https://github.com/<repo-name>.git`
+- Clone the repository `git clone https://github.com/hannanel100/pigeon-backend.git`
 - Navigate to the project directory `cd pigeon-backend`
 - Install the required dependencies `npm install`
 - Set up environment variables in a `.env` file, including:
@@ -52,4 +53,4 @@ The API has the following endpoints:
 
 
 ## License
-This project is licensed under the MIT License. See the [LICENSE.md](https://github.com/<repo-name>/blob/master/LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE.md](https://github.com/hannanel100/pigeon-backend/blob/master/LICENSE) file for details.
